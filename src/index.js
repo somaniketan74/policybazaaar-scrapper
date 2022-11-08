@@ -17,21 +17,21 @@ const fetchUrlData = async(url) => {
         return data;
     }
     catch(err){
-        res.status(500).json(err.message);
+        console.log(err.message);
     }
 }
 app.get( '/:registrationnumber', async(req, res) => {
     let obj = {};
     const regNo = req.params.registrationnumber;
     const response = await fetchUrlData(`https://twowheeler.policybazaar.com/MVCController/PreQuote/CJRenewalRedirect?RegistrationNo=${regNo}&isQuote=true&isVendorResponse=0`);
-   
+    console.log(response);
     if(typeof response == 'string' && response){
         let data = JSON.parse(response).ResponseObject;
         obj = {
             CityAndRTO : data?.Regn_no,
             Manufacturer : data?.MakeName,
             Registration_Year : data?.RegYear,
-            Model_And_Varient : data?.VariantName
+            Model_And_Varient : `${data?.ModelName} - ${data?.VariantName}`
          }
     }
     else {
